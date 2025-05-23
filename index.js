@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT File-Batch Sender (v0.6)
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.7
 // @description  Batch-send JSON messages with collapsible, draggable, resizable panel & adjustable rest interval
 // @author       liuweiqing
 // @match        https://chat.openai.com/*
@@ -111,7 +111,13 @@
         <progress id="bar" value="0" max="1" style="width:100%"></progress>
       </div>`;
   document.body.appendChild(panel);
-
+  function reinsertPanel() {
+    if (!document.body.contains(panel)) {
+      document.body.appendChild(panel);
+    }
+  }
+  new MutationObserver(reinsertPanel).observe(document.body, { childList: true, subtree: true });
+  reinsertPanel();
   const $header = $("#batchHeader");
   const $toggle = $("#toggle");
 
